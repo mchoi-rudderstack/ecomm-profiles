@@ -150,19 +150,19 @@ models:
             from: models/rsTracksUnionPages
             select: count(distinct context_session_id)
             where: " context_session_id is not null and {{macro_datediff('session_start_time')}} between 0 and 7"
-            description: total number of sessions over last 7 days.
+            description: Total number of sessions over last 7 days.
         - entity_var:
             name: total_sessions_90_days
             from: models/rsTracksUnionPages
             select: count(distinct context_session_id)
             where: " context_session_id is not null and {{macro_datediff('session_start_time')}} between 0 and 90"
-            description: total number of sessions over last 90 days.
+            description: Total number of sessions over last 90 days.
         - entity_var:
             name: total_sessions_365_days
             from: models/rsTracksUnionPages
             select: count(distinct context_session_id)
             where: " context_session_id is not null and {{macro_datediff('session_start_time')}} between 0 and 365 "
-            description: total number of sessions over last 356 days.
+            description: Total number of sessions over last 356 days.
         - entity_var:
             name: avg_session_length_in_sec_overall
             from: models/rsTracksUnionPages
@@ -231,17 +231,17 @@ models:
             name: campaigns_list
             from: inputs/rsPages
             select: array_agg( context_campaign_name) WITHIN GROUP (ORDER BY timestamp asc)
-            description: list of all campaigns from which a user has visited the app, sorted in chronological order, from oldest to newest
+            description: List of all campaigns from which a user has visited the app, sorted in chronological order, from oldest to newest
         - entity_var:
             name: mediums_list
             from: inputs/rsPages
             select: array_agg( context_campaign_medium) WITHIN GROUP (ORDER BY timestamp asc)
-            description: list of all mediums from which a user has visited the app, sorted in chronological order, from oldest to newest
+            description: List of all mediums from which a user has visited the app, sorted in chronological order, from oldest to newest
         - entity_var:
             name: sources_list
             from: inputs/rsPages
             select: array_agg( context_campaign_source) WITHIN GROUP (ORDER BY timestamp asc)
-            description: list of all sources from which a user has visited the app, sorted in chronological order, from oldest to newest
+            description: List of all sources from which a user has visited the app, sorted in chronological order, from oldest to newest
       features:
         - days_since_last_seen
         - days_since_account_creation
