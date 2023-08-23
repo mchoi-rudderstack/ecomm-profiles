@@ -1,5 +1,5 @@
 # Project name
-name: ecommloyal_customers
+name: ecomm_loyal_customers
 # Project's yaml schema version
 schema_version: 40
 # WH Connection Profile to use.
@@ -13,7 +13,7 @@ model_folders:
 # Entities in this project and their ids.
 entities:
   - name: user
-    id_stitcher: models/rudder_user_id_stitcher
+    id_stitcher: models/ECOMM_LOYAL_CUSTOMERS_STITCHER
     id_types:
       - user_id
       - anonymous_id
