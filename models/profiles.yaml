@@ -71,7 +71,7 @@ models:
         - entity_var:
             name: is_churned_7_days
             select: case when days_since_last_seen > 7 then 1 else 0 end
-            description: it specifies if there is any activity observed in the last n days. It is dependent on days_since_last_seen
+            description: It specifies if there is any activity observed in the last n days. It is dependent on days_since_last_seen
             dependencies:
               - days_since_last_seen
               #days since last purchase
@@ -474,16 +474,19 @@ models:
             name: session_end_time
             select: max(timestamp)
             from: inputs/rsPages
+            description: The end time of the session
         - entity_var:
             name: session_start_time
             select: min(timestamp)
             from: inputs/rsPages
+            description: The start time of the session
         - entity_var:
             name: session_length
             select: TIMESTAMPDIFF(SECOND, session_start_time, session_end_time)
             dependencies:
               - session_end_time
               - session_start_time
+            description: Duration of the session in seconds
         - entity_var:
             name: user_id
             select: last_value(user_id)
@@ -492,6 +495,7 @@ models:
               order_by:
                 - timestamp
             from: inputs/rsPages
+            description: The user id associated to the session
         - entity_var:
             name: anonymous_id
             select: last_value(anonymous_id)
@@ -500,6 +504,7 @@ models:
               order_by:
                 - timestamp
             from: inputs/rsPages
+            description: The anonymous id associated to the session
       features:
         - session_end_time
         - session_start_time
