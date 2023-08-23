@@ -483,10 +483,10 @@ models:
         - entity_var:
             name: session_length
             select: TIMESTAMPDIFF(SECOND, session_start_time, session_end_time)
+            description: Duration of the session in seconds
             dependencies:
               - session_end_time
               - session_start_time
-            description: Duration of the session in seconds
         - entity_var:
             name: user_id
             select: last_value(user_id)
