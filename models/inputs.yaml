@@ -1,7 +1,7 @@
 inputs:
   - name: rsIdentifies
     app_defaults:
-      table: DEMO_DB.MCHOI_RUDDERSTACK.IDENTIFIES
+      table: PROFILES_DEMO_DB.SHOPIFY_DEMO.IDENTIFIES
     occurred_at_col: timestamp
     ids:
       - select: "user_id"
@@ -21,7 +21,7 @@ inputs:
       category: webhook
   - name: rsTracks
     app_defaults:
-      table: DEMO_DB.MCHOI_RUDDERSTACK.TRACKS
+      table: PROFILES_DEMO_DB.SHOPIFY_DEMO.TRACKS
     occurred_at_col: timestamp
     ids:
       - select: "user_id"
@@ -37,7 +37,7 @@ inputs:
       category: webhook
   - name: rsPages
     app_defaults:
-      table: DEMO_DB.MCHOI_RUDDERSTACK.PAGES
+      table: PROFILES_DEMO_DB.SHOPIFY_DEMO.PAGES
     occurred_at_col: timestamp
     ids:
       - select: "user_id"
@@ -61,7 +61,7 @@ inputs:
       category: webhook
   - name: rsOrderCreated
     app_defaults:
-      table: DEMO_DB.MCHOI_RUDDERSTACK.TRACKS
+      table: PROFILES_DEMO_DB.SHOPIFY_DEMO.ORDER_CREATED
     occurred_at_col: timestamp
     ids:
       - select: "user_id"
@@ -77,7 +77,7 @@ inputs:
       category: webhook
   - name: rsOrderCancelled
     app_defaults:
-      table: DEMO_DB.MCHOI_RUDDERSTACK.TRACKS
+      table: PROFILES_DEMO_DB.SHOPIFY_DEMO.ORDER_CANCELLED
     occurred_at_col: timestamp
     ids:
       - select: "user_id"
@@ -93,7 +93,7 @@ inputs:
       category: webhook
   - name: rsCartUpdate
     app_defaults:
-      table: DEMO_DB.MCHOI_RUDDERSTACK.TRACKS
+      table: PROFILES_DEMO_DB.SHOPIFY_DEMO.CART_UPDATE
     occurred_at_col: timestamp
     ids:
       - select: "anonymous_id"
@@ -105,7 +105,7 @@ inputs:
       category: webhook
   - name: rsOrderUpdated
     app_defaults:
-      table: DEMO_DB.MCHOI_RUDDERSTACK.TRACKS
+      table: PROFILES_DEMO_DB.SHOPIFY_DEMO.ORDER_UPDATED
     occurred_at_col: timestamp
     ids:
       - select: "user_id"
