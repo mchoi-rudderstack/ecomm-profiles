@@ -39,11 +39,17 @@ models:
             name: xpoints_remaining_balance
             from: inputs/rsIdentifies
             select: first_value(xpoints_balance)
+            window:
+              order_by:
+                - timestamp desc
             description: The remaining number of xpoints available to spend
         - entity_var:
             name: xpoints_spent
             from: inputs/rsIdentifies
             select: first_value(xpoints_spent)
+            window:
+              order_by:
+                - timestamp desc
             description: The number of xpoints spent to date
         - entity_var:
             name: max_timestamp_cart_update
