@@ -16,6 +16,10 @@ inputs:
         type: email
         entity: user
         to_default_stitcher: true
+      - select: "flx_id"
+        type: user_id
+        entity: user
+        to_default_stitcher: true
     source_metadata:
       role: shopify
       category: webhook
