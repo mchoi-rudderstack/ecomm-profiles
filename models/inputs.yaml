@@ -17,7 +17,7 @@ inputs:
         entity: user
         to_default_stitcher: true
       - select: "flx_id"
-        type: user_id
+        type: flx_id
         entity: user
         to_default_stitcher: true
     source_metadata:
