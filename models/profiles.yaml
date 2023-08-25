@@ -53,7 +53,7 @@ models:
             description: The number of xpoints spent to date
         - entity_var:
             name: xpoints_ltv
-            select: sum(xpoints_remaining_balance, xpoints_spent)
+            select: xpoints_remaining_balance + xpoints_spent
             dependencies:
               - xpoints_remaining_balance
               - xpoints_spent
