@@ -36,6 +36,16 @@ models:
           value: "{% if !(end_time|isnil) %} datediff(day, date({{column}}), date('{{end_time.Format(\"2006-01-02 15:04:05\")}}')) <={{number_of_days}} {% else %} datediff(day, date({{column}}), GETDATE()) <= {{number_of_days}} {% endif %}"
       vars:
         - entity_var:
+            name: xpoints_remaining_balance
+            from: inputs/rsIdentifies
+            select: first_value(xpoints_balance)
+            description: The remaining number of xpoints available to spend
+        - entity_var:
+            name: xpoints_spent
+            from: inputs/rsIdentifies
+            select: first_value(xpoints_spent)
+            description: The number of xpoints spent to date
+        - entity_var:
             name: max_timestamp_cart_update
             select: max(timestamp)
             from: inputs/rsCartUpdate
