@@ -36,13 +36,6 @@ models:
           value: "{% if !(end_time|isnil) %} datediff(day, date({{column}}), date('{{end_time.Format(\"2006-01-02 15:04:05\")}}')) <={{number_of_days}} {% else %} datediff(day, date({{column}}), GETDATE()) <= {{number_of_days}} {% endif %}"
       vars:
         - entity_var:
-            name: lifetime_songs_listened
-            from: inputs/rsIdentifies
-            select: first_value(songs_listened)
-            window:
-              order_by:
-                - timestamp desc
-        - entity_var:
             name: max_timestamp_cart_update
             select: max(timestamp)
             from: inputs/rsCartUpdate
@@ -418,7 +411,6 @@ models:
             from: models/rsItemsPurchasedEver
             description: The list of unique products bought by the user.
       features:
-        - lifetime_songs_listened
         - days_since_last_seen
         - is_churned_7_days
         - days_since_last_cart_add
