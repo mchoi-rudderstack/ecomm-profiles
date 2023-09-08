@@ -36,6 +36,22 @@ models:
           value: "{% if !(end_time|isnil) %} datediff(day, date({{column}}), date('{{end_time.Format(\"2006-01-02 15:04:05\")}}')) <={{number_of_days}} {% else %} datediff(day, date({{column}}), GETDATE()) <= {{number_of_days}} {% endif %}"
       vars:
         - entity_var:
+            name: favorite_make
+            from: inputs/rsIdentifies
+            select: first_value(favorite_make)
+            window:
+              order_by:
+                - timestamp desc
+            description: Favorite Make selected by the User
+        - entity_var:
+            name: favorite_model
+            from: inputs/rsIdentifies
+            select: first_value(favorite_model)
+            window:
+              order_by:
+                - timestamp desc
+            description: Favorite Model selected by the User
+        - entity_var:
             name: max_timestamp_cart_update
             select: max(timestamp)
             from: inputs/rsCartUpdate
@@ -142,34 +158,6 @@ models:
                 - case when TOTAL_PRICE_USD is not null then 2 else 1 end desc
                 - timestamp desc
             description: The total value of products that are part of the last transaction.
-            #total refund
-        - entity_var:
-            name: total_refund
-            select: sum(total_price_usd ::real)
-            from: inputs/rsOrderCancelled
-            where: financial_status in ('paid','refunded','partially_refunded')
-            description: Total refund for a particular user to date.
-        #refund count
-        - entity_var:
-            name: refund_count
-            select: count(*)
-            from: inputs/rsOrderCancelled
-            where: financial_status in ('paid','refunded','partially_refunded')
-            description: The total number of times an order has been cancelled by a user and has been refunded
-        #total_refund_in_past_1_days
-        - entity_var:
-            name: total_refund_in_past_1_days
-            select: sum(total_price_usd::real)
-            from: inputs/rsOrderCancelled
-            where: "{{macro_datediff_n('timestamp','1')}}"
-            description: Total refund for a particular user in last 1 day
-        #total_refund_in_past_7_days
-        - entity_var:
-            name: total_refund_in_past_7_days
-            select: sum(total_price_usd::real)
-            from: inputs/rsOrderCancelled
-            where: "{{macro_datediff_n('timestamp','7')}}"
-            description: Total refund for a particular user in last 1 day
         - entity_var:
             name: days_since_account_creation
             select: "{{macro_datediff('min(timestamp)')}}"
@@ -411,11 +399,11 @@ models:
             from: models/rsItemsPurchasedEver
             description: The list of unique products bought by the user.
       features:
+        - favorite_make
+        - favorite_model
         - days_since_last_seen
         - is_churned_7_days
         - days_since_last_cart_add
-        - total_refund
-        - refund_count
         - days_since_last_purchase
         - days_since_first_purchase
         - has_credit_card
@@ -424,8 +412,6 @@ models:
         - highest_transaction_value
         - median_transaction_value
         - total_transactions
-        - total_refund_in_past_1_days
-        - total_refund_in_past_7_days
         - days_since_account_creation
         - state
         - country
