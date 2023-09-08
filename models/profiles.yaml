@@ -52,6 +52,14 @@ models:
                 - timestamp desc
             description: Favorite Model selected by the User
         - entity_var:
+            name: preferred_condition
+            from: inputs/rsIdentifies
+            select: first_value(looking_for)
+            window:
+              order_by:
+                - timestamp desc
+            description: Preferred car condition for purchase 
+        - entity_var:
             name: max_timestamp_cart_update
             select: max(timestamp)
             from: inputs/rsCartUpdate
@@ -217,18 +225,6 @@ models:
                 - timestamp desc
             where: currency is not null and currency!=''
             description: The currency used to complete purchase
-        - entity_var:
-            name: active_days_in_past_7_days
-            select: count(distinct date(session_start_time))
-            from: models/rsSessionTable
-            where: "{{macro_datediff_n('session_start_time','7')}}"
-            description: Days with events out of the last 7 days
-        - entity_var:
-            name: active_days_in_past_365_days
-            select: count(distinct date(session_start_time))
-            from: models/rsSessionTable
-            where: "{{macro_datediff_n('session_start_time','365')}}"
-            description: Days with events out of the last 365 days
         - entity_var:
             name: total_sessions_till_date
             from: models/rsSessionTable
@@ -401,6 +397,8 @@ models:
       features:
         - favorite_make
         - favorite_model
+        - preferred_condition
+        - days_since_account_creation
         - days_since_last_seen
         - is_churned_7_days
         - days_since_last_cart_add
@@ -412,15 +410,12 @@ models:
         - highest_transaction_value
         - median_transaction_value
         - total_transactions
-        - days_since_account_creation
         - state
         - country
         - first_name
         - last_name
         - user_email
         - currency
-        - active_days_in_past_7_days
-        - active_days_in_past_365_days
         - total_sessions_till_date
         - total_sessions_last_week
         - avg_session_length_in_sec_overall
