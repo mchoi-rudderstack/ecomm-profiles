@@ -402,6 +402,7 @@ models:
         - days_since_last_seen
         - highest_transaction_value
         - median_transaction_value
+        - avg_transaction_value
         - total_transactions
         - is_churned_7_days
         - days_since_last_cart_add
@@ -409,10 +410,6 @@ models:
         - days_since_first_purchase
         - has_credit_card
         - avg_units_per_transaction
-        - avg_transaction_value
-        - highest_transaction_value
-        - median_transaction_value
-        - total_transactions
         - state
         - country
         - first_name
