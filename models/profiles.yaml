@@ -400,6 +400,9 @@ models:
         - preferred_condition
         - days_since_account_creation
         - days_since_last_seen
+        - highest_transaction_value
+        - median_transaction_value
+        - total_transactions
         - is_churned_7_days
         - days_since_last_cart_add
         - days_since_last_purchase
