@@ -54,7 +54,7 @@ models:
         - entity_var:
             name: preferred_condition
             from: inputs/rsIdentifies
-            select: first_value(looking_for)
+            select: first_value(shopping_for)
             window:
               order_by:
                 - timestamp desc
