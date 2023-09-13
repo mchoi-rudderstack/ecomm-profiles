@@ -36,29 +36,29 @@ models:
           value: "{% if !(end_time|isnil) %} datediff(day, date({{column}}), date('{{end_time.Format(\"2006-01-02 15:04:05\")}}')) <={{number_of_days}} {% else %} datediff(day, date({{column}}), GETDATE()) <= {{number_of_days}} {% endif %}"
       vars:
         - entity_var:
-            name: favorite_make
+            name: product_line
             from: inputs/rsIdentifies
-            select: first_value(favorite_make)
+            select: first_value(product)
             window:
               order_by:
                 - timestamp desc
-            description: Favorite Make selected by the User
+            description: The product line that was purchased by the customer
         - entity_var:
-            name: favorite_model
+            name: engagement_score
             from: inputs/rsIdentifies
-            select: first_value(favorite_model)
+            select: first_value(engagement_score)
             window:
               order_by:
                 - timestamp desc
-            description: Favorite Model selected by the User
+            description: The number of activity coming from the account
         - entity_var:
-            name: preferred_condition
+            name: account_health
             from: inputs/rsIdentifies
-            select: first_value(shopping_for)
+            select: first_value(account_health)
             window:
               order_by:
                 - timestamp desc
-            description: Preferred car condition for purchase 
+            description: The status of the customer based on activity and sentiment 
         - entity_var:
             name: max_timestamp_cart_update
             select: max(timestamp)
@@ -395,9 +395,9 @@ models:
             from: models/rsItemsPurchasedEver
             description: The list of unique products bought by the user.
       features:
-        - favorite_make
-        - favorite_model
-        - preferred_condition
+        - product_line
+        - engagment_score
+        - account_health
         - days_since_account_creation
         - days_since_last_seen
         - highest_transaction_value
