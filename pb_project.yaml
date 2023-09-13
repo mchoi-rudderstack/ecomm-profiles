@@ -19,7 +19,6 @@ entities:
       - anonymous_id
       - email
       - cart_token
-      - flx_id
   - name: session
     id_stitcher: models/ecomm_session_stitcher
     id_types:
@@ -42,6 +41,5 @@ id_types:
         regex: ".+@.+"
       - type: exclude
         value: "test@company.com"
-  - name: flx_id
   - name: session_id
   - name: session_main_id
