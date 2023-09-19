@@ -36,21 +36,21 @@ models:
           value: "{% if !(end_time|isnil) %} datediff(day, date({{column}}), date('{{end_time.Format(\"2006-01-02 15:04:05\")}}')) <={{number_of_days}} {% else %} datediff(day, date({{column}}), GETDATE()) <= {{number_of_days}} {% endif %}"
       vars:
         - entity_var:
-            name: product_line
+            name: active_students
             from: inputs/rsIdentifies
-            select: first_value(product)
+            select: first_value(active_students)
             window:
               order_by:
                 - timestamp desc
-            description: The product line that was purchased by the customer
+            description: The total number of active students in the past semester from the school
         - entity_var:
-            name: engagement_score
+            name: active_tutors
             from: inputs/rsIdentifies
-            select: first_value(engagement_score)
+            select: first_value(active_tutors)
             window:
               order_by:
                 - timestamp desc
-            description: The number of activity coming from the account
+            description: The total number of active tutors in the past semester from the school
         - entity_var:
             name: account_health
             from: inputs/rsIdentifies
@@ -58,7 +58,15 @@ models:
             window:
               order_by:
                 - timestamp desc
-            description: The status of the customer based on activity and sentiment 
+            description: The health status of the school based on activity and results 
+        - entity_var:
+            name: avg_gpa
+            from: inputs/rsIdentifies
+            select: first_value(avg_gpa)
+            window:
+              order_by:
+                - timestamp desc
+            description: The average GPA of the students from the school in the past semester 
         - entity_var:
             name: max_timestamp_cart_update
             select: max(timestamp)
@@ -395,9 +403,10 @@ models:
             from: models/rsItemsPurchasedEver
             description: The list of unique products bought by the user.
       features:
-        - product_line
-        - engagement_score
+        - active_students
+        - active_tutors
         - account_health
+        - avg_gpa
         - days_since_account_creation
         - days_since_last_seen
         - highest_transaction_value
