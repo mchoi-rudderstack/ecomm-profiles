@@ -36,37 +36,37 @@ models:
           value: "{% if !(end_time|isnil) %} datediff(day, date({{column}}), date('{{end_time.Format(\"2006-01-02 15:04:05\")}}')) <={{number_of_days}} {% else %} datediff(day, date({{column}}), GETDATE()) <= {{number_of_days}} {% endif %}"
       vars:
         - entity_var:
-            name: active_students
+            name: num_of_active_matches
             from: inputs/rsIdentifies
-            select: first_value(active_students)
+            select: first_value(num_of_active_matches)
             window:
               order_by:
                 - timestamp desc
-            description: The total number of active students in the past semester from the school
+            description: The total number of current active matches
         - entity_var:
-            name: active_tutors
+            name: lifetime_num_of_matches
             from: inputs/rsIdentifies
-            select: first_value(active_tutors)
+            select: first_value(lifetime_num_of_matches)
             window:
               order_by:
                 - timestamp desc
-            description: The total number of active tutors in the past semester from the school
+            description: Total number of matches made by the user
         - entity_var:
-            name: account_health
+            name: photos_uploaded
             from: inputs/rsIdentifies
-            select: first_value(account_health)
+            select: first_value(photos_uploaded)
             window:
               order_by:
                 - timestamp desc
-            description: The health status of the school based on activity and results 
+            description: The number of photos uploaded to profile 
         - entity_var:
-            name: avg_gpa
+            name: num_of_interests_selected
             from: inputs/rsIdentifies
-            select: first_value(avg_gpa)
+            select: first_value(num_of_interests_selected)
             window:
               order_by:
                 - timestamp desc
-            description: The average GPA of the students from the school in the past semester 
+            description: The number of interests selected by the user 
         - entity_var:
             name: max_timestamp_cart_update
             select: max(timestamp)
@@ -403,10 +403,10 @@ models:
             from: models/rsItemsPurchasedEver
             description: The list of unique products bought by the user.
       features:
-        - active_students
-        - active_tutors
-        - account_health
-        - avg_gpa
+        - num_of_active_matches
+        - lifetime_num_of_matches
+        - photos_uploaded
+        - num_of_interests_selected
         - days_since_account_creation
         - days_since_last_seen
         - highest_transaction_value
