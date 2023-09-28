@@ -36,6 +36,30 @@ models:
           value: "{% if !(end_time|isnil) %} datediff(day, date({{column}}), date('{{end_time.Format(\"2006-01-02 15:04:05\")}}')) <={{number_of_days}} {% else %} datediff(day, date({{column}}), GETDATE()) <= {{number_of_days}} {% endif %}"
       vars:
         - entity_var:
+            name: lifetime_amount_donated
+            from: inputs/rsIdentifies
+            select: first_value(TOTAL_AMOUNT_DONATED)
+            window:
+              order_by:
+                - timestamp desc
+            description: The total amount donated in USD
+        - entity_var:
+            name: num_of_prays_requested
+            from: inputs/rsIdentifies
+            select: first_value(PRAYS_REQUESTED)
+            window:
+              order_by:
+                - timestamp desc
+            description: The total number of prays requested
+        - entity_var:
+            name: num_of_unique_content_viewed
+            from: inputs/rsIdentifies
+            select: first_value(NUM_OF_CONTENT_VIEWED)
+            window:
+              order_by:
+                - timestamp desc
+            description: The total number of unique content viewed
+        - entity_var:
             name: num_of_active_matches
             from: inputs/rsIdentifies
             select: first_value(num_of_active_matches)
@@ -403,6 +427,9 @@ models:
             from: models/rsItemsPurchasedEver
             description: The list of unique products bought by the user.
       features:
+        - lifetime_amount_donated
+        - num_of_prays_requested
+        - num_of_unique_content_viewed
         - num_of_active_matches
         - lifetime_num_of_matches
         - photos_uploaded
