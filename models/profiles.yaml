@@ -36,21 +36,21 @@ models:
           value: "{% if !(end_time|isnil) %} datediff(day, date({{column}}), date('{{end_time.Format(\"2006-01-02 15:04:05\")}}')) <={{number_of_days}} {% else %} datediff(day, date({{column}}), GETDATE()) <= {{number_of_days}} {% endif %}"
       vars:
         - entity_var:
-            name: lifetime_amount_donated
+            name: user_ltv
             from: inputs/rsIdentifies
-            select: first_value(TOTAL_AMOUNT_DONATED)
+            select: first_value(ltv)
             window:
               order_by:
                 - timestamp desc
-            description: The total amount donated in USD
+            description: The lifetime value for the user
         - entity_var:
-            name: num_of_prays_requested
+            name: visits_in_last_30_days
             from: inputs/rsIdentifies
-            select: first_value(PRAYS_REQUESTED)
+            select: first_value(num_of_visits)
             window:
               order_by:
                 - timestamp desc
-            description: The total number of prays requested
+            description: The total number of vists to the page by the user
         - entity_var:
             name: num_of_unique_content_viewed
             from: inputs/rsIdentifies
@@ -59,38 +59,6 @@ models:
               order_by:
                 - timestamp desc
             description: The total number of unique content viewed
-        - entity_var:
-            name: num_of_active_matches
-            from: inputs/rsIdentifies
-            select: first_value(num_of_active_matches)
-            window:
-              order_by:
-                - timestamp desc
-            description: The total number of current active matches
-        - entity_var:
-            name: lifetime_num_of_matches
-            from: inputs/rsIdentifies
-            select: first_value(lifetime_num_of_matches)
-            window:
-              order_by:
-                - timestamp desc
-            description: Total number of matches made by the user
-        - entity_var:
-            name: photos_uploaded
-            from: inputs/rsIdentifies
-            select: first_value(photos_uploaded)
-            window:
-              order_by:
-                - timestamp desc
-            description: The number of photos uploaded to profile 
-        - entity_var:
-            name: num_of_interests_selected
-            from: inputs/rsIdentifies
-            select: first_value(num_of_interests_selected)
-            window:
-              order_by:
-                - timestamp desc
-            description: The number of interests selected by the user 
         - entity_var:
             name: max_timestamp_cart_update
             select: max(timestamp)
@@ -427,13 +395,9 @@ models:
             from: models/rsItemsPurchasedEver
             description: The list of unique products bought by the user.
       features:
-        - lifetime_amount_donated
-        - num_of_prays_requested
+        - user_ltv
+        - visits_in_last_30_days
         - num_of_unique_content_viewed
-        - num_of_active_matches
-        - lifetime_num_of_matches
-        - photos_uploaded
-        - num_of_interests_selected
         - days_since_account_creation
         - days_since_last_seen
         - highest_transaction_value
