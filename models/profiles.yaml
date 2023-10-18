@@ -36,13 +36,29 @@ models:
           value: "{% if !(end_time|isnil) %} datediff(day, date({{column}}), date('{{end_time.Format(\"2006-01-02 15:04:05\")}}')) <={{number_of_days}} {% else %} datediff(day, date({{column}}), GETDATE()) <= {{number_of_days}} {% endif %}"
       vars:
         - entity_var:
-            name: user_ltv
+            name: account_health
             from: inputs/rsIdentifies
-            select: first_value(ltv)
+            select: first_value(account_health)
             window:
               order_by:
                 - timestamp desc
-            description: The lifetime value for the user
+            description: The health of the account
+        - entity_var:
+            name: engagement_score
+            from: inputs/rsIdentifies
+            select: first_value(engagement_score)
+            window:
+              order_by:
+                - timestamp desc
+            description: The level of activity within this account
+        - entity_var:
+            name: contract_value
+            from: inputs/rsIdentifies
+            select: first_value(contract_value)
+            window:
+              order_by:
+                - timestamp desc
+            description: The ARR generated from this account
         - entity_var:
             name: visits_in_last_30_days
             from: inputs/rsIdentifies
@@ -50,15 +66,15 @@ models:
             window:
               order_by:
                 - timestamp desc
-            description: The total number of vists to the page by the user
+            description: The total number of vists to the page by this account
         - entity_var:
-            name: num_of_unique_content_viewed
+            name: num_campaigns_launched
             from: inputs/rsIdentifies
-            select: first_value(NUM_OF_CONTENT_VIEWED)
+            select: first_value(NUM_OF_CAMPAIGNS_LAUNCHED)
             window:
               order_by:
                 - timestamp desc
-            description: The total number of unique content viewed
+            description: The total number of campaigns launched
         - entity_var:
             name: max_timestamp_cart_update
             select: max(timestamp)
@@ -395,9 +411,11 @@ models:
             from: models/rsItemsPurchasedEver
             description: The list of unique products bought by the user.
       features:
-        - user_ltv
+        - account_health
+        - engagement_score
+        - contract_value
+        - num_campaigns_launched
         - visits_in_last_30_days
-        - num_of_unique_content_viewed
         - days_since_account_creation
         - days_since_last_seen
         - highest_transaction_value
