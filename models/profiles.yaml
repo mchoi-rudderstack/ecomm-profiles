@@ -68,9 +68,9 @@ models:
                 - timestamp desc
             description: Type of unit the user is searching for
         - entity_var:
-            name: perferred_amenities
+            name: preferred_amenities
             from: inputs/rsIdentifies
-            select: first_value(perferred_amenities)
+            select: first_value(preferred_amenities)
             window:
               order_by:
                 - timestamp desc
