@@ -467,41 +467,11 @@ models:
     model_type: feature_table_model
     model_spec:
       validity_time: 24h # 1 day
-      entity_key: session
+      entity_key: household
       vars:
         - entity_var:
-            name: session_end_time
-            select: max(timestamp)
-            from: inputs/rsPages
-        - entity_var:
-            name: session_start_time
-            select: min(timestamp)
-            from: inputs/rsPages
-        - entity_var:
-            name: session_length
-            select: TIMESTAMPDIFF(SECOND, session_start_time, session_end_time)
-            dependencies:
-              - session_end_time
-              - session_start_time
-        - entity_var:
-            name: user_id
-            select: last_value(user_id)
-            where: user_id is not null
-            window:
-              order_by:
-                - timestamp
-            from: inputs/rsPages
-        - entity_var:
-            name: anonymous_id
-            select: last_value(anonymous_id)
-            where: anonymous_id is not null
-            window:
-              order_by:
-                - timestamp
-            from: inputs/rsPages
+            name: unit_id
+            select: first_value(unit_id)
+            from: inputs/rsIdentifies
       features:
-        - session_end_time
-        - session_start_time
-        - session_length
-        - user_id
-        - anonymous_id
+        - unit_id
