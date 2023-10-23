@@ -11,13 +11,6 @@ models:
         - from: inputs/rsOrderCreated
         - from: inputs/rsOrderCancelled
         - from: inputs/rsCartUpdate
-  - name: ecomm_session_stitcher
-    model_type: id_stitcher
-    model_spec:
-      validity_time: 24h # 1 day
-      entity_key: household
-      edge_sources:
-        - from: inputs/rsIdentifies
   # Remove the section below, if you don't want to generate a feature table
   - name: ecomm_loyal_customers
     model_type: feature_table_model
