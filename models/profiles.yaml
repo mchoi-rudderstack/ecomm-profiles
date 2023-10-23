@@ -36,37 +36,45 @@ models:
           value: "{% if !(end_time|isnil) %} datediff(day, date({{column}}), date('{{end_time.Format(\"2006-01-02 15:04:05\")}}')) <={{number_of_days}} {% else %} datediff(day, date({{column}}), GETDATE()) <= {{number_of_days}} {% endif %}"
       vars:
         - entity_var:
-            name: ltv
+            name: units_viewed
             from: inputs/rsIdentifies
-            select: first_value(ltv)
+            select: first_value(units_viewed)
             window:
               order_by:
                 - timestamp desc
-            description: The lifetime value of this preferred customer
+            description: The number of units viewed in the last 30 days
         - entity_var:
-            name: engagement_score
+            name: applications_submitted
             from: inputs/rsIdentifies
-            select: first_value(engagement_score)
+            select: first_value(applications_submitted)
             window:
               order_by:
                 - timestamp desc
-            description: The level of activity within this account
+            description: Total number of applications submitted in the last 30 days
         - entity_var:
-            name: churn_prediction
+            name: lease_signed_date
             from: inputs/rsIdentifies
-            select: first_value(churn_score)
+            select: first_value(lease_signed_date)
             window:
               order_by:
                 - timestamp desc
-            description: The predictive churn score where 10 means highly likely
+            description: The date when the user signed a lease
         - entity_var:
-            name: visits_in_last_30_days
+            name: perferred_unit_type
             from: inputs/rsIdentifies
-            select: first_value(num_of_visits)
+            select: first_value(perferred_unit_type)
             window:
               order_by:
                 - timestamp desc
-            description: The total number of vists to the page by this account
+            description: Type of unit the user is searching for
+        - entity_var:
+            name: perferred_amenities
+            from: inputs/rsIdentifies
+            select: first_value(perferred_amenities)
+            window:
+              order_by:
+                - timestamp desc
+            description: The amenities the user is searching for
         - entity_var:
             name: max_timestamp_cart_update
             select: max(timestamp)
@@ -403,10 +411,11 @@ models:
             from: models/rsItemsPurchasedEver
             description: The list of unique products bought by the user.
       features:
-        - ltv
-        - engagement_score
-        - churn_prediction
-        - visits_in_last_30_days
+        - units_viewed
+        - applications_submitted
+        - lease_signed_date
+        - preferred_unit_type
+        - preferred_amenities
         - days_since_account_creation
         - days_since_last_seen
         - highest_transaction_value
