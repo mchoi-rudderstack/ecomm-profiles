@@ -60,9 +60,9 @@ models:
                 - timestamp desc
             description: The date when the user signed a lease
         - entity_var:
-            name: perferred_unit_type
+            name: preferred_unit_type
             from: inputs/rsIdentifies
-            select: first_value(perferred_unit_type)
+            select: first_value(preferred_unit_type)
             window:
               order_by:
                 - timestamp desc
