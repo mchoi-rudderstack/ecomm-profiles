@@ -19,10 +19,6 @@ entities:
       - anonymous_id
       - email
       - cart_token
-  - name: household
-    id_stitcher: models/ecomm_session_stitcher
-    id_types:
-      - unit_id
 id_types:
   - name: user_id
   - name: cart_token
