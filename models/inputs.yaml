@@ -16,6 +16,10 @@ inputs:
         type: email
         entity: user
         to_default_stitcher: true
+      - select: "unit_id"
+        type: unit_id
+        entity: household
+        to_default_stitcher: true
     source_metadata:
       role: shopify
       category: webhook
