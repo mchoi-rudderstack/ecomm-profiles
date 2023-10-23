@@ -472,6 +472,9 @@ models:
         - entity_var:
             name: unit_id
             select: first_value(unit_id)
+            window:
+              order_by:
+                - timestamp desc
             from: inputs/rsIdentifies
       features:
         - unit_id
