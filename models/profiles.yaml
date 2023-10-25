@@ -60,6 +60,14 @@ models:
                 - timestamp desc
             description: The date when the user signed a lease
         - entity_var:
+            name: preferred_move_in_date
+            from: inputs/rsIdentifies
+            select: first_value(preferred_move_in_date)
+            window:
+              order_by:
+                - timestamp desc
+            description: The expected move in date set by the user
+        - entity_var:
             name: preferred_unit_type
             from: inputs/rsIdentifies
             select: first_value(preferred_unit_type)
@@ -414,6 +422,7 @@ models:
         - units_viewed
         - applications_submitted
         - lease_signed_date
+        - preferred_move_in_date
         - preferred_unit_type
         - preferred_amenities
         - days_since_account_creation
