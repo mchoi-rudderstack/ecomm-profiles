@@ -36,53 +36,13 @@ models:
           value: "{% if !(end_time|isnil) %} datediff(day, date({{column}}), date('{{end_time.Format(\"2006-01-02 15:04:05\")}}')) <={{number_of_days}} {% else %} datediff(day, date({{column}}), GETDATE()) <= {{number_of_days}} {% endif %}"
       vars:
         - entity_var:
-            name: units_viewed
+            name: product_used
             from: inputs/rsIdentifies
-            select: first_value(units_viewed)
+            select: first_value(products)
             window:
               order_by:
                 - timestamp desc
-            description: The number of units viewed in the last 30 days
-        - entity_var:
-            name: applications_submitted
-            from: inputs/rsIdentifies
-            select: first_value(applications_submitted)
-            window:
-              order_by:
-                - timestamp desc
-            description: Total number of applications submitted in the last 30 days
-        - entity_var:
-            name: lease_signed_date
-            from: inputs/rsIdentifies
-            select: first_value(lease_signed_date)
-            window:
-              order_by:
-                - timestamp desc
-            description: The date when the user signed a lease
-        - entity_var:
-            name: preferred_move_in_date
-            from: inputs/rsIdentifies
-            select: first_value(preferred_move_in_date)
-            window:
-              order_by:
-                - timestamp desc
-            description: The expected move in date set by the user
-        - entity_var:
-            name: preferred_unit_type
-            from: inputs/rsIdentifies
-            select: first_value(preferred_unit_type)
-            window:
-              order_by:
-                - timestamp desc
-            description: Type of unit the user is searching for
-        - entity_var:
-            name: preferred_amenities
-            from: inputs/rsIdentifies
-            select: first_value(preferred_amenities)
-            window:
-              order_by:
-                - timestamp desc
-            description: The amenities the user is searching for
+            description: The products used by this user
         - entity_var:
             name: max_timestamp_cart_update
             select: max(timestamp)
@@ -419,12 +379,12 @@ models:
             from: models/rsItemsPurchasedEver
             description: The list of unique products bought by the user.
       features:
-        - units_viewed
-        - applications_submitted
-        - lease_signed_date
-        - preferred_move_in_date
-        - preferred_unit_type
-        - preferred_amenities
+        - product_used
+        - first_name
+        - last_name
+        - user_email
+        - first_seen_date
+        - last_seen_date
         - days_since_account_creation
         - days_since_last_seen
         - highest_transaction_value
@@ -439,17 +399,12 @@ models:
         - avg_units_per_transaction
         - state
         - country
-        - first_name
-        - last_name
-        - user_email
         - currency
         - total_sessions_till_date
         - total_sessions_last_week
         - avg_session_length_in_sec_overall
         - avg_session_length_in_sec_last_week
         - avg_session_length_in_sec_365_days
-        - first_seen_date
-        - last_seen_date
         - carts_in_past_1_days
         - carts_in_past_7_days
         - carts_in_past_365_days
@@ -472,45 +427,3 @@ models:
         - net_amt_spent_in_past
         - gross_amt_spent_in_past
         - items_purchased_ever
-  - name: ecomm_session_features
-    model_type: feature_table_model
-    model_spec:
-      validity_time: 24h # 1 day
-      entity_key: session
-      vars:
-        - entity_var:
-            name: session_end_time
-            select: max(timestamp)
-            from: inputs/rsPages
-        - entity_var:
-            name: session_start_time
-            select: min(timestamp)
-            from: inputs/rsPages
-        - entity_var:
-            name: session_length
-            select: TIMESTAMPDIFF(SECOND, session_start_time, session_end_time)
-            dependencies:
-              - session_end_time
-              - session_start_time
-        - entity_var:
-            name: user_id
-            select: last_value(user_id)
-            where: user_id is not null
-            window:
-              order_by:
-                - timestamp
-            from: inputs/rsPages
-        - entity_var:
-            name: anonymous_id
-            select: last_value(anonymous_id)
-            where: anonymous_id is not null
-            window:
-              order_by:
-                - timestamp
-            from: inputs/rsPages
-      features:
-        - session_end_time
-        - session_start_time
-        - session_length
-        - user_id
-        - anonymous_id
