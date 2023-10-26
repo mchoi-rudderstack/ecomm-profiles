@@ -325,8 +325,6 @@ models:
         - first_name
         - last_name
         - user_email
-        - first_seen_date
-        - last_seen_date
         - days_since_account_creation
         - days_since_last_seen
         - highest_transaction_value
