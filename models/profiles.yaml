@@ -37,6 +37,14 @@ models:
                 - timestamp desc
             description: The products used by this user
         - entity_var:
+            name: engagement_score
+            from: inputs/rsIdentifies
+            select: first_value(number)
+            window:
+              order_by:
+                - timestamp desc
+            description: The products used by this user
+        - entity_var:
             name: max_timestamp_cart_update
             select: max(timestamp)
             from: inputs/rsCartUpdate
@@ -322,6 +330,7 @@ models:
             description: The list of unique products bought by the user.
       features:
         - product_used
+        - engagement_score
         - first_name
         - last_name
         - user_email
