@@ -203,57 +203,6 @@ models:
             where: currency is not null and currency!=''
             description: The currency used to complete purchase
         - entity_var:
-            name: total_sessions_till_date
-            from: models/rsSessionTable
-            select: count(*)
-            description: Total individual sessions created till date.
-        - entity_var:
-            name: total_sessions_last_week
-            from: models/rsSessionTable
-            select: count(*)
-            where: "{{macro_datediff_n('session_start_time','7')}}"
-            description: Total number of sessions over last 7 days.
-        - entity_var:
-            name: total_sessions_90_days
-            from: models/rsSessionTable
-            select: count(*)
-            where: "{{macro_datediff_n('session_start_time','90')}}"
-            description: Total number of sessions over last 90 days.
-        - entity_var:
-            name: total_sessions_365_days
-            from: models/rsSessionTable
-            select: count(*)
-            where: "{{macro_datediff_n('session_start_time','365')}}"
-            description: Total number of sessions over last 365 days.
-        - entity_var:
-            name: avg_session_length_in_sec_overall
-            from: models/rsSessionTable
-            select: avg(session_length)
-            description: Average session length (in seconds) of all the user sessions till date.
-        - entity_var:
-            name: avg_session_length_in_sec_last_week
-            from: models/rsSessionTable
-            select: avg(session_length)
-            where: "{{macro_datediff_n('session_start_time','7')}}"
-            description: Average session length (in seconds) of all the user sessions that started in last 7 days
-        - entity_var:
-            name: avg_session_length_in_sec_365_days
-            from: models/rsSessionTable
-            select: avg(session_length)
-            where: "{{macro_datediff_n('session_start_time','365')}}"
-            description: Average session length (in seconds) of all the user sessions that started in last 365 days
-        - entity_var:
-            name: first_seen_date
-            from: models/rsSessionTable
-            select: min(date(session_start_time))
-            description: The first date on which an event has been recorded by the user
-        - entity_var:
-            name: last_seen_date
-            from: models/rsSessionTable
-            select: max(date(session_end_time))
-            description: The latest date on which an event has been recorded by the user
-            #days since last cart add
-        - entity_var:
             name: carts_in_past_1_days
             select: count(distinct token)
             from: inputs/rsCartUpdate
@@ -393,11 +342,6 @@ models:
         - state
         - country
         - currency
-        - total_sessions_till_date
-        - total_sessions_last_week
-        - avg_session_length_in_sec_overall
-        - avg_session_length_in_sec_last_week
-        - avg_session_length_in_sec_365_days
         - carts_in_past_1_days
         - carts_in_past_7_days
         - carts_in_past_365_days
@@ -407,8 +351,6 @@ models:
         - products_added_in_past_1_days
         - products_added_in_past_7_days
         - products_added_in_past_365_days
-        - total_sessions_90_days
-        - total_sessions_365_days
         - last_cart_status
         - last_cart_value_in_dollars
         - transactions_in_past_1_days
