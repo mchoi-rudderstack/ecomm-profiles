@@ -34,6 +34,11 @@ models:
             select: array_agg(distinct products)
             description: A list of products associated to this user
         - entity_var:
+            name: sessions_in_last_30_days
+            from: inputs/rsIdentifies
+            select: array_agg(sessions_in_last_30_days)
+            description: How often is the user listening to a device
+        - entity_var:
             name: churn_risk_score
             from: inputs/rsIdentifies
             select: first_value(number)
@@ -327,6 +332,7 @@ models:
             description: The list of unique products bought by the user.
       features:
         - products_used
+        - sessions_in_last_30_days
         - churn_risk_score
         - first_name
         - last_name
