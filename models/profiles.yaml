@@ -29,13 +29,29 @@ models:
           value: "{% if !(end_time|isnil) %} datediff(day, date({{column}}), date('{{end_time.Format(\"2006-01-02 15:04:05\")}}')) <={{number_of_days}} {% else %} datediff(day, date({{column}}), GETDATE()) <= {{number_of_days}} {% endif %}"
       vars:
         - entity_var:
-            name: product_used
+            name: user_type
             from: inputs/rsIdentifies
-            select: first_value(products)
+            select: first_value(user_type)
             window:
               order_by:
                 - timestamp desc
-            description: The products used by this user
+            description: Who is completing the onboarding form
+        - entity_var:
+            name: sell_urgency
+            from: inputs/rsIdentifies
+            select: first_value(sell_urgency)
+            window:
+              order_by:
+                - timestamp desc
+            description: What is the timeline for selling their house
+        - entity_var:
+            name: buy_urgency
+            from: inputs/rsIdentifies
+            select: first_value(buy_urgency)
+            window:
+              order_by:
+                - timestamp desc
+            description: What is the timeline of buying a house
         - entity_var:
             name: engagement_score
             from: inputs/rsIdentifies
@@ -43,7 +59,7 @@ models:
             window:
               order_by:
                 - timestamp desc
-            description: The products used by this user
+            description: What is the engagement score of the user
         - entity_var:
             name: max_timestamp_cart_update
             select: max(timestamp)
@@ -329,7 +345,9 @@ models:
             from: models/rsItemsPurchasedEver
             description: The list of unique products bought by the user.
       features:
-        - product_used
+        - user_type
+        - sell_urgency
+        - buy_urgency
         - engagement_score
         - first_name
         - last_name
