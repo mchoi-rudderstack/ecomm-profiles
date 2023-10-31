@@ -326,7 +326,7 @@ models:
             from: models/rsItemsPurchasedEver
             description: The list of unique products bought by the user.
       features:
-        - product_used
+        - products_used
         - engagement_score
         - first_name
         - last_name
