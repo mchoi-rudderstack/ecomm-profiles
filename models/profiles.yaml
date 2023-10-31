@@ -53,6 +53,14 @@ models:
                 - timestamp desc
             description: What is the timeline of buying a house
         - entity_var:
+            name: valuation
+            from: inputs/rsIdentifies
+            select: first_value(valuation)
+            window:
+              order_by:
+                - timestamp desc
+            description: What is the most recent valuation of the home
+        - entity_var:
             name: engagement_score
             from: inputs/rsIdentifies
             select: first_value(number)
@@ -348,6 +356,7 @@ models:
         - user_type
         - sell_urgency
         - buy_urgency
+        - valuation
         - engagement_score
         - first_name
         - last_name
