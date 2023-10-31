@@ -29,13 +29,10 @@ models:
           value: "{% if !(end_time|isnil) %} datediff(day, date({{column}}), date('{{end_time.Format(\"2006-01-02 15:04:05\")}}')) <={{number_of_days}} {% else %} datediff(day, date({{column}}), GETDATE()) <= {{number_of_days}} {% endif %}"
       vars:
         - entity_var:
-            name: product_used
+            name: products_used
             from: inputs/rsIdentifies
-            select: first_value(products)
-            window:
-              order_by:
-                - timestamp desc
-            description: Product that the user is using
+            select: array_agg(distinct products)
+            description: A list of products associated to this user
         - entity_var:
             name: engagement_score
             from: inputs/rsIdentifies
