@@ -34,13 +34,13 @@ models:
             select: array_agg(distinct products)
             description: A list of products associated to this user
         - entity_var:
-            name: engagement_score
+            name: churn_risk_score
             from: inputs/rsIdentifies
             select: first_value(number)
             window:
               order_by:
                 - timestamp desc
-            description: What is the engagement score of the user
+            description: What is the churn risk factor of the user
         - entity_var:
             name: max_timestamp_cart_update
             select: max(timestamp)
@@ -327,7 +327,7 @@ models:
             description: The list of unique products bought by the user.
       features:
         - products_used
-        - engagement_score
+        - churn_risk_score
         - first_name
         - last_name
         - user_email
