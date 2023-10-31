@@ -16,7 +16,6 @@ entities:
     id_stitcher: models/ecomm_loyal_customers_stitcher
     serve_traits:
       - id_served: email
-      - id_served: user_id
     id_types:
       - user_id
       - anonymous_id
