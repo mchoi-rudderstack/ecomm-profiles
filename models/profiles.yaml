@@ -358,7 +358,7 @@ models:
             from: models/rsItemsPurchasedEver
             description: The list of unique products bought by the user.
       features:
-        - model_viewed
+        - models_viewed
         - last_model_viewed
         - preferred_ownership_type
         - preferred_payment_method
