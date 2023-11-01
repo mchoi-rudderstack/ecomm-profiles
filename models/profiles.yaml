@@ -44,7 +44,7 @@ models:
         - entity_var:
             name: preferred_ownership_type
             from: inputs/rsIdentifies
-            select: first_value(PREFERRED_PAYMENT_TYPE)
+            select: first_value(PREFERRED_OWNERSHIP_TYPE)
             window:
               order_by:
                 - timestamp desc
