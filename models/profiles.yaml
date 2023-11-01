@@ -29,23 +29,50 @@ models:
           value: "{% if !(end_time|isnil) %} datediff(day, date({{column}}), date('{{end_time.Format(\"2006-01-02 15:04:05\")}}')) <={{number_of_days}} {% else %} datediff(day, date({{column}}), GETDATE()) <= {{number_of_days}} {% endif %}"
       vars:
         - entity_var:
-            name: products_used
+            name: models_viewed
             from: inputs/rsIdentifies
-            select: array_agg(distinct products)
-            description: A list of products associated to this user
+            select: array_agg(distinct models)
+            description: A list of all models viewed by the user
         - entity_var:
-            name: sessions_in_last_30_days
+            name: last_model_viewed
             from: inputs/rsIdentifies
-            select: array_agg(sessions_in_last_30_days)
-            description: How often is the user listening to a device
-        - entity_var:
-            name: churn_risk_score
-            from: inputs/rsIdentifies
-            select: first_value(number)
+            select: first_value(models)
             window:
               order_by:
                 - timestamp desc
-            description: What is the churn risk factor of the user
+            description: The last model the user viewed
+        - entity_var:
+            name: preferred_ownership_type
+            from: inputs/rsIdentifies
+            select: first_value(PREFERRED_PAYMENT_TYPE)
+            window:
+              order_by:
+                - timestamp desc
+            description: Does the user plan to purchase or lease the vehicle
+        - entity_var:
+            name: preferred_payment_method
+            from: inputs/rsIdentifies
+            select: first_value(PREFERRED_PAYMENT_TYPE)
+            window:
+              order_by:
+                - timestamp desc
+            description: How does the user plan on paying for the vehicle
+        - entity_var:
+            name: sessions_in_last_30_days
+            from: inputs/rsIdentifies
+            select: first_value(SESSIONS_IN_LAST_30_DAYS)
+            window:
+              order_by:
+                - timestamp desc
+            description: How many times have we seen this user
+        - entity_var:
+            name: test_drive_completed
+            from: inputs/rsIdentifies
+            select: first_value(test_drive_completed)
+            window:
+              order_by:
+                - timestamp desc
+            description: Has the user completed a test drive
         - entity_var:
             name: max_timestamp_cart_update
             select: max(timestamp)
@@ -331,8 +358,12 @@ models:
             from: models/rsItemsPurchasedEver
             description: The list of unique products bought by the user.
       features:
-        - products_used
+        - model_viewed
+        - last_model_viewed
+        - preferred_ownership_type
+        - preferred_payment_method
         - sessions_in_last_30_days
+        - test_drive_completed
         - churn_risk_score
         - first_name
         - last_name
