@@ -364,7 +364,6 @@ models:
         - preferred_payment_method
         - sessions_in_last_30_days
         - test_drive_completed
-        - churn_risk_score
         - first_name
         - last_name
         - user_email
