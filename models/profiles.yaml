@@ -29,50 +29,77 @@ models:
           value: "{% if !(end_time|isnil) %} datediff(day, date({{column}}), date('{{end_time.Format(\"2006-01-02 15:04:05\")}}')) <={{number_of_days}} {% else %} datediff(day, date({{column}}), GETDATE()) <= {{number_of_days}} {% endif %}"
       vars:
         - entity_var:
-            name: models_viewed
+            name: role
             from: inputs/rsIdentifies
-            select: array_agg(distinct models)
-            description: A list of all models viewed by the user
-        - entity_var:
-            name: last_model_viewed
-            from: inputs/rsIdentifies
-            select: first_value(models)
+            select: first_value(role)
             window:
               order_by:
                 - timestamp desc
-            description: The last model the user viewed
+            description: The role associated to this user
         - entity_var:
-            name: preferred_ownership_type
+            name: ezrewards
             from: inputs/rsIdentifies
-            select: first_value(PREFERRED_OWNERSHIP_TYPE)
+            select: first_value(ezrewards)
             window:
               order_by:
                 - timestamp desc
-            description: Does the user plan to purchase or lease the vehicle
+            description: Amount of ezRewards available to use
         - entity_var:
-            name: preferred_payment_method
+            name: orders_completed_30_days
             from: inputs/rsIdentifies
-            select: first_value(PREFERRED_PAYMENT_TYPE)
+            select: first_value(orders_completed_30_days)
             window:
               order_by:
                 - timestamp desc
-            description: How does the user plan on paying for the vehicle
+            description: Total number of orders completed by the account in the last 30 days
         - entity_var:
-            name: sessions_in_last_30_days
+            name: orders_completed_12_months
             from: inputs/rsIdentifies
-            select: first_value(SESSIONS_IN_LAST_30_DAYS)
+            select: first_value(orders_completed_12_months)
             window:
               order_by:
                 - timestamp desc
-            description: How many times have we seen this user
+            description: Total number of orders completed by the account in the last 12 months
         - entity_var:
-            name: test_drive_completed
+            name: points_incentivized_propensity_score
             from: inputs/rsIdentifies
-            select: first_value(test_drive_completed)
+            select: first_value(points_incentivized_propensity_score)
             window:
               order_by:
                 - timestamp desc
-            description: Has the user completed a test drive
+            description: What is the propensity of the user to use their points
+        - entity_var:
+            name: onboarding_completed
+            from: inputs/rsIdentifies
+            select: first_value(onboarding_completed)
+            window:
+              order_by:
+                - timestamp desc
+            description: Is the user part of an onboarding flow?
+        - entity_var:
+            name: churn_score
+            from: inputs/rsIdentifies
+            select: first_value(churn_score)
+            window:
+              order_by:
+                - timestamp desc
+            description: The predictive score of the user churning
+        - entity_var:
+            name: open_tickets
+            from: inputs/rsIdentifies
+            select: first_value(open_tickets)
+            window:
+              order_by:
+                - timestamp desc
+            description: Total number of support tickets currently open by this user
+        - entity_var:
+            name: closed_tickets
+            from: inputs/rsIdentifies
+            select: first_value(closed_tickets)
+            window:
+              order_by:
+                - timestamp desc
+            description: Total number of support tickets closed
         - entity_var:
             name: max_timestamp_cart_update
             select: max(timestamp)
@@ -358,21 +385,25 @@ models:
             from: models/rsItemsPurchasedEver
             description: The list of unique products bought by the user.
       features:
-        - models_viewed
-        - last_model_viewed
-        - preferred_ownership_type
-        - preferred_payment_method
-        - sessions_in_last_30_days
-        - test_drive_completed
+        - role
+        - ezrewards
+        - orders_completed_30_days
+        - orders_completed_12_months
+        - points_incentivized_propensity_score
+        - onboarding_completed
+        - churn_score
+        - open_tickets
+        - closed_tickets
+        - last_transaction_value
+        - highest_transaction_value
+        - median_transaction_value
+        - avg_transaction_value
+        - total_transactions
         - first_name
         - last_name
         - user_email
         - days_since_account_creation
         - days_since_last_seen
-        - highest_transaction_value
-        - median_transaction_value
-        - avg_transaction_value
-        - total_transactions
         - is_churned_7_days
         - days_since_last_cart_add
         - days_since_last_purchase
@@ -386,7 +417,6 @@ models:
         - carts_in_past_7_days
         - carts_in_past_365_days
         - total_carts
-        - last_transaction_value
         - total_products_added
         - products_added_in_past_1_days
         - products_added_in_past_7_days
