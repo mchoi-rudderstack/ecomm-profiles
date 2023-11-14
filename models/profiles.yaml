@@ -29,26 +29,29 @@ models:
           value: "{% if !(end_time|isnil) %} datediff(day, date({{column}}), date('{{end_time.Format(\"2006-01-02 15:04:05\")}}')) <={{number_of_days}} {% else %} datediff(day, date({{column}}), GETDATE()) <= {{number_of_days}} {% endif %}"
       vars:
         - entity_var:
-            name: therapy_area
-            select: array_agg(distinct therapy_area)
+            name: auctions_entered
             from: inputs/rsIdentifies
-            description: The designated therapy area(s) for the patient
-        - entity_var:
-            name: num_of_visits
-            from: inputs/rsIdentifies
-            select: first_value(NUM_OF_VISITS)
+            select: first_value(auctions_entered)
             window:
               order_by:
                 - timestamp desc
-            description: Number of visits by the patient
+            description: Number of auctions that the user participated in
         - entity_var:
-            name: insurance_provider
+            name: bids_submitted
             from: inputs/rsIdentifies
-            select: first_value(insurance_provider)
+            select: first_value(auctions_entered)
             window:
               order_by:
                 - timestamp desc
-            description: The patients insurance provider
+            description: Number of times a user placed a bid
+        - entity_var:
+            name: bids_won
+            from: inputs/rsIdentifies
+            select: first_value(bids_won)
+            window:
+              order_by:
+                - timestamp desc
+            description: Number of auctions won by the user
         - entity_var:
             name: max_timestamp_cart_update
             select: max(timestamp)
@@ -334,9 +337,9 @@ models:
             from: models/rsItemsPurchasedEver
             description: The list of unique products bought by the user.
       features:
-        - therapy_area
-        - num_of_visits
-        - insurance_provider
+        - auctions_entered
+        - bids_submitted
+        - bids_won
         - days_since_account_creation
         - days_since_last_seen
         - first_name
