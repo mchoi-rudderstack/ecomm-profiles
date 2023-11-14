@@ -39,7 +39,7 @@ models:
         - entity_var:
             name: bids_submitted
             from: inputs/rsIdentifies
-            select: first_value(auctions_entered)
+            select: first_value(bids_entered)
             window:
               order_by:
                 - timestamp desc
