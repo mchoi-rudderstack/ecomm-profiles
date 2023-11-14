@@ -30,12 +30,9 @@ models:
       vars:
         - entity_var:
             name: therapy_area
+            select: array_agg(distinct therapy_area)
             from: inputs/rsIdentifies
-            select: first_value(therapy_area)
-            window:
-              order_by:
-                - timestamp desc
-            description: The designated therapy area for the patient
+            description: The designated therapy area(s) for the patient
         - entity_var:
             name: num_of_visits
             from: inputs/rsIdentifies
