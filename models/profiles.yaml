@@ -338,7 +338,7 @@ models:
             description: The list of unique products bought by the user.
       features:
         - therapy_area
-        - num_of_vists
+        - num_of_visits
         - insurance_provider
         - days_since_account_creation
         - days_since_last_seen
