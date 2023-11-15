@@ -29,29 +29,38 @@ models:
           value: "{% if !(end_time|isnil) %} datediff(day, date({{column}}), date('{{end_time.Format(\"2006-01-02 15:04:05\")}}')) <={{number_of_days}} {% else %} datediff(day, date({{column}}), GETDATE()) <= {{number_of_days}} {% endif %}"
       vars:
         - entity_var:
-            name: auctions_entered
+            name: intention
             from: inputs/rsIdentifies
-            select: first_value(auctions_entered)
-            window:
-              order_by:
-                - timestamp desc
-            description: Number of auctions that the user participated in
+            select: array_agg(distinct intention)
+            description: What is the user looking to do on OpenDoor?
         - entity_var:
-            name: bids_submitted
+            name: sell_urgency
             from: inputs/rsIdentifies
-            select: first_value(bids_submitted)
+            select: first_value(sell_urgency)
             window:
               order_by:
                 - timestamp desc
-            description: Number of times a user placed a bid
+            description: When is the user looking to sell their home?
         - entity_var:
-            name: bids_won
+            name: buy_urgency
             from: inputs/rsIdentifies
-            select: first_value(bids_won)
+            select: first_value(buy_urgency)
             window:
               order_by:
                 - timestamp desc
-            description: Number of auctions won by the user
+            description: When is the user looking to buy a home?
+        - entity_var:
+            name: total_sessions_to_date
+            from: models/rsTracksUnionPages
+            select: count(distinct context_session_id)
+            where: context_session_id is not null
+            description: Total individual sessions created till date.
+        - entity_var:
+            name: total_sessions_90_days
+            from: models/rsTracksUnionPages
+            select: count(distinct context_session_id)
+            where: " context_session_id is not null and {{macro_datediff('session_start_time')}} between 0 and 90"
+            description: total number of sessions over last 90 days.
         - entity_var:
             name: max_timestamp_cart_update
             select: max(timestamp)
@@ -337,9 +346,11 @@ models:
             from: models/rsItemsPurchasedEver
             description: The list of unique products bought by the user.
       features:
-        - auctions_entered
-        - bids_submitted
-        - bids_won
+        - intention
+        - sell_urgency
+        - buy_urgency
+        - total_sessions_to_date
+        - total_sessions_90_days
         - days_since_account_creation
         - days_since_last_seen
         - first_name
