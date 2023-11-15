@@ -27,14 +27,6 @@ models:
           type: anonymous_id
           entity: user
           to_default_stitcher: true
-      contract:
-        is_optional: false
-        is_event_stream: false
-        with_entity_ids:
-          - user
-        with_columns:
-          - name: user_id
-          - name: anonymous_id
   - name: rsItemsPurchasedEverSku
     model_type: sql_template
     model_spec:
