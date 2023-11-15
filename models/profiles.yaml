@@ -36,7 +36,7 @@ models:
         - entity_var:
             name: sell_urgency
             from: inputs/rsIdentifies
-            select: first_value(sell_urgency)
+            select: first_value(sell_urgency ignore nulls)
             window:
               order_by:
                 - timestamp desc
@@ -44,7 +44,7 @@ models:
         - entity_var:
             name: buy_urgency
             from: inputs/rsIdentifies
-            select: first_value(buy_urgency)
+            select: first_value(buy_urgency ignore nulls)
             window:
               order_by:
                 - timestamp desc
