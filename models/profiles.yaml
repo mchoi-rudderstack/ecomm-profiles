@@ -56,12 +56,6 @@ models:
             where: context_session_id is not null
             description: Total individual sessions created till date.
         - entity_var:
-            name: total_sessions_90_days
-            from: models/rsTracksUnionPages
-            select: count(distinct context_session_id)
-            where: " context_session_id is not null and {{macro_datediff('session_start_time')}} between 0 and 90"
-            description: total number of sessions over last 90 days.
-        - entity_var:
             name: max_timestamp_cart_update
             select: max(timestamp)
             from: inputs/rsCartUpdate
@@ -174,24 +168,6 @@ models:
             from: inputs/rsIdentifies
             description: Number of days since loyaltt account was created
         - entity_var:
-            name: state
-            from: inputs/rsIdentifies
-            select: first_value(state)
-            window:
-              order_by:
-                - timestamp desc
-            where: state is not null and state!=''
-            description: State of the shipping address
-        - entity_var:
-            name: country
-            from: inputs/rsIdentifies
-            select: first_value(address_country)
-            window:
-              order_by:
-                - timestamp desc
-            where: address_country is not null and address_country!=''
-            description: Country of the shipping address
-        - entity_var:
             name: first_name
             from: inputs/rsIdentifies
             select: first_value(first_name)
@@ -218,33 +194,6 @@ models:
                 - timestamp desc
             where: email is not null and email!=''
             description: Email associated to the order
-        - entity_var:
-            name: currency
-            from: inputs/rsIdentifies
-            select: first_value(currency)
-            window:
-              order_by:
-                - timestamp desc
-            where: currency is not null and currency!=''
-            description: The currency used to complete purchase
-        - entity_var:
-            name: carts_in_past_1_days
-            select: count(distinct token)
-            from: inputs/rsCartUpdate
-            where: "{{macro_datediff_n('timestamp','1')}}"
-            description: A cart id is created for events such as create_cart,update_cart. This coln specifies how many cart ids were created in the past 1 days
-        - entity_var:
-            name: carts_in_past_7_days
-            select: count(distinct token)
-            from: inputs/rsCartUpdate
-            where: "{{macro_datediff_n('timestamp','7')}}"
-            description: A cart id is created for events such as create_cart,update_cart. This coln specifies how many cart ids were created in the past 7 days
-        - entity_var:
-            name: carts_in_past_365_days
-            select: count(distinct token)
-            from: inputs/rsCartUpdate
-            where: "{{macro_datediff_n('timestamp','365')}}"
-            description: A cart id is created for events such as create_cart,update_cart. This coln specifies how many cart ids were created in the past 365 days
         - entity_var:
             name: total_carts
             select: count(distinct token)
@@ -281,19 +230,6 @@ models:
               order_by:
                 - timestamp desc
             description: Last known cart id
-        - entity_var:
-            name: last_cart_value_in_dollars
-            select: sum(line_price)
-            from: models/rsCartLineItems
-            where: token=latest_cart_id
-            description: The value of products added in the latest cart.
-            dependencies:
-              - latest_cart_id
-        - entity_var:
-            name: last_cart_status
-            select: min(coalesce(fulfillment_status, financial_status, 'abandoned'))
-            from: models/rsOrderCreatedOrderCancelled
-            description: Status of latest cart whether it is fulfilled or paid or abandoned
         - entity_var:
             name: transactions_in_past_1_days
             select: count(*)::real
@@ -350,7 +286,6 @@ models:
         - sell_urgency
         - buy_urgency
         - total_sessions_to_date
-        - total_sessions_90_days
         - days_since_account_creation
         - days_since_last_seen
         - first_name
@@ -367,19 +302,11 @@ models:
         - days_since_first_purchase
         - has_credit_card
         - avg_units_per_transaction
-        - state
-        - country
-        - currency
-        - carts_in_past_1_days
-        - carts_in_past_7_days
-        - carts_in_past_365_days
         - total_carts
         - total_products_added
         - products_added_in_past_1_days
         - products_added_in_past_7_days
         - products_added_in_past_365_days
-        - last_cart_status
-        - last_cart_value_in_dollars
         - transactions_in_past_1_days
         - transactions_in_past_90_days
         - transactions_in_past_365_days
