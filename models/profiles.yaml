@@ -29,27 +29,6 @@ models:
           value: "{% if !(end_time|isnil) %} datediff(day, date({{column}}), date('{{end_time.Format(\"2006-01-02 15:04:05\")}}')) <={{number_of_days}} {% else %} datediff(day, date({{column}}), GETDATE()) <= {{number_of_days}} {% endif %}"
       vars:
         - entity_var:
-            name: intention
-            from: inputs/rsIdentifies
-            select: array_agg(distinct intention)
-            description: What is the user looking to do on OpenDoor?
-        - entity_var:
-            name: sell_urgency
-            from: inputs/rsIdentifies
-            select: first_value(sell_urgency ignore nulls)
-            window:
-              order_by:
-                - timestamp desc
-            description: When is the user looking to sell their home?
-        - entity_var:
-            name: buy_urgency
-            from: inputs/rsIdentifies
-            select: first_value(buy_urgency ignore nulls)
-            window:
-              order_by:
-                - timestamp desc
-            description: When is the user looking to buy a home?
-        - entity_var:
             name: total_sessions_to_date
             from: models/rsTracksUnionPages
             select: count(distinct context_session_id)
@@ -166,7 +145,7 @@ models:
             name: days_since_account_creation
             select: "{{macro_datediff('min(timestamp)')}}"
             from: inputs/rsIdentifies
-            description: Number of days since loyaltt account was created
+            description: Number of days since loyalty account was created
         - entity_var:
             name: first_name
             from: inputs/rsIdentifies
@@ -282,9 +261,6 @@ models:
             from: models/rsItemsPurchasedEver
             description: The list of unique products bought by the user.
       features:
-        - intention
-        - sell_urgency
-        - buy_urgency
         - total_sessions_to_date
         - days_since_account_creation
         - days_since_last_seen
