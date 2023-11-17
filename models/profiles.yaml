@@ -30,7 +30,7 @@ models:
       vars:
         - entity_var:
             name: interests
-            from: models/rsIdentifies
+            from: inputs/rsIdentifies
             select: array_agg(distinct interests)
             description: Types of items that the user previously searched or viewed
         - entity_var:
