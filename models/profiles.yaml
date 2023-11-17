@@ -172,7 +172,7 @@ models:
               order_by:
                 - timestamp desc
             where: email is not null and email!=''
-            description: Email associated to the order
+            description: Most recently seen email associated to the user
         - entity_var:
             name: total_carts
             select: count(distinct token)
