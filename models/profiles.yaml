@@ -29,6 +29,11 @@ models:
           value: "{% if !(end_time|isnil) %} datediff(day, date({{column}}), date('{{end_time.Format(\"2006-01-02 15:04:05\")}}')) <={{number_of_days}} {% else %} datediff(day, date({{column}}), GETDATE()) <= {{number_of_days}} {% endif %}"
       vars:
         - entity_var:
+            name: interests
+            from: models/rsIdentifies
+            select: array_agg(distinct interests)
+            description: Types of items that the user previously searched or viewed
+        - entity_var:
             name: total_sessions_to_date
             from: models/rsTracksUnionPages
             select: count(distinct context_session_id)
@@ -261,6 +266,7 @@ models:
             from: models/rsItemsPurchasedEver
             description: The list of unique products bought by the user.
       features:
+        - interests
         - total_sessions_to_date
         - days_since_account_creation
         - days_since_last_seen
