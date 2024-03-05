@@ -20,7 +20,6 @@ entities:
       - user_id
       - anonymous_id
       - email
-      - cart_token
 id_types:
   - name: user_id
   - name: cart_token
