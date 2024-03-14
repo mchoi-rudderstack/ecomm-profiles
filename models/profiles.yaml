@@ -147,7 +147,7 @@ models:
             from: inputs/rsIdentifies
             description: Number of days since loyalty account was created
         - entity_var:
-            name: first_name
+            name: firstname
             from: inputs/rsIdentifies
             select: first_value(first_name)
             window:
@@ -156,7 +156,7 @@ models:
             where: first_name is not null and first_name!=''
             description: First name of the customer
         - entity_var:
-            name: last_name
+            name: lastname
             from: inputs/rsIdentifies
             select: first_value(last_name)
             window:
@@ -264,8 +264,8 @@ models:
         - total_sessions_to_date
         - days_since_account_creation
         - days_since_last_seen
-        - first_name
-        - last_name
+        - firstname
+        - lastname
         - user_email
         - last_transaction_value
         - highest_transaction_value
