@@ -99,8 +99,7 @@ models:
              b.financial_status as financial_status_order_cancelled,
              b.cart_token as cart_token_order_cancelled,
              b.timestamp as timestamp_order_cancelled,
-             b.products as products_order_cancelled,
-             c.fulfillment_status
+             b.products as products_order_cancelled
          from {{OrderCreated}} a 
          left join {{OrderCancelled}} b on a.user_id = b.user_id and a.order_number = b.order_number
          left join {{OrderUpdated}} c on a.user_id = c.user_id and a.order_number = c.order_number
@@ -202,7 +201,6 @@ models:
           oc.ORDER_NUMBER,
           oc.TIMESTAMP as order_created_timestamp,
           oc.CART_TOKEN,
-          oc.FULFILLMENT_STATUS,
           oc.FINANCIAL_STATUS
           from {{rsCartLineItems}} cli
           left outer join {{OrderCreated}} oc on cli.token = oc.cart_token
