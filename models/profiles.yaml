@@ -228,29 +228,6 @@ models:
             where: "{{macro_datediff_n('timestamp','365')}}"
             description: Number of transactions in last 365 day
         - entity_var:
-            name: net_amt_spent_in_past_90_days
-            select: sum(total_price_usd::real) - coalesce(sum(total_price_usd_order_cancelled::real), 0)
-            from: models/rsOrderCreatedOrderCancelled
-            where: "{{macro_datediff_n('timestamp','90')}}"
-            description: Net amount i.e. sales-refund spent by the user in last 90 days.
-        - entity_var:
-            name: net_amt_spent_in_past_365_days
-            select: sum(total_price_usd::real) - coalesce(sum(total_price_usd_order_cancelled::real), 0)
-            from: models/rsOrderCreatedOrderCancelled
-            where: "{{macro_datediff_n('timestamp','365')}}"
-            description: Net amount i.e. sales-refund spent by the user in last 365 days.
-        - entity_var:
-            name: net_amt_spent_in_past_1_days
-            select: sum(total_price_usd::real) - coalesce(sum(total_price_usd_order_cancelled::real), 0)
-            from: models/rsOrderCreatedOrderCancelled
-            where: "{{macro_datediff_n('timestamp','1')}}"
-            description: Net amount i.e. sales-refund spent by the user in last 1 day.
-        - entity_var:
-            name: net_amt_spent_in_past
-            select: sum(total_price_usd::real) - coalesce(sum(total_price_usd_order_cancelled::real), 0)
-            from: models/rsOrderCreatedOrderCancelled
-            description: Net amount i.e. sales-refund spent by the user to date.
-        - entity_var:
             name: gross_amt_spent_in_past
             select: sum(total_price_usd::real)
             from: models/rsOrderCreatedOrderCancelled
@@ -286,9 +263,5 @@ models:
         - transactions_in_past_1_days
         - transactions_in_past_90_days
         - transactions_in_past_365_days
-        - net_amt_spent_in_past_1_days
-        - net_amt_spent_in_past_90_days
-        - net_amt_spent_in_past_365_days
-        - net_amt_spent_in_past
         - gross_amt_spent_in_past
         - items_purchased_ever
